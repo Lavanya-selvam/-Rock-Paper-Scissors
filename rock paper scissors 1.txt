@@ -1,0 +1,54 @@
+import random
+name = input("Enter your name:")
+print("Hello,", name)
+file = open("rating.txt", "r")
+reading = file.readlines()
+list2 =['rock','gun','lightning','devil','dragon','water','air','paper','sponge','wolf','tree','human','snake','scissors','fire']
+
+user_choice = input()
+print("Okay, let's start")
+
+win_with = []
+lose_with = []
+if user_choice in list2:
+    for el in range(list2.index(user_choice)):  # separating 'weaker' elements
+        win_with.append(list2[el])
+    for el in range(list2.index(user_choice) + 1, len(list2)): # separating 'stronger' elements
+        lose_with.append(list2[el])
+    while len(win_with) > len(lose_with): # equalizing the lists
+        lose_with.append(win_with[0])
+        win_with.remove(win_with[0])
+    while len(win_with) < len(lose_with):
+        win_with.append((lose_with[-1]))
+        lose_with.remove(lose_with[-1])        
+rating = 0
+for line in reading:
+    if name in reading:
+        x = line.split()
+        rating += x[1]
+        break
+words = ["rock", "paper", "scissors"]
+user_choice = ""
+computer_choice = random.choice(words)
+loosers = {"rock": "scissors", "paper": "rock", "scissors": "paper"}
+while user_choice != "!exit":
+    computer_choice = random.choice(words)
+    user_choice = input()
+    if user_choice == "!rating":
+        print("Your rating:", rating)
+    if user_choice not in words:
+        print("invalid input")
+    else:
+        if user_choice == computer_choice:
+            print(f"There is a draw ({user_choice})")
+            rating += 50
+
+        elif loosers[user_choice] == computer_choice:
+            print(f"Well done. Computer chose {computer_choice} and failed")
+            rating += 100
+        else:
+            print(f"Sorry, but computer chose {computer_choice}")
+            rating = rating
+print("Bye!")
+
+
